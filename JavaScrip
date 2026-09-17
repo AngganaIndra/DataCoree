@@ -1,0 +1,85 @@
+function exportExcel(){
+
+    const data = ambilData();
+
+    let excelData = [];
+
+    let nomor = 1;
+
+    data.forEach(kabel => {
+
+        kabel.cores.forEach(core => {
+
+            excelData.push({
+
+                "No": nomor++,
+
+                "Kabel":
+                    kabel.nama,
+
+                "Jenis Kabel":
+                    kabel.jenis,
+
+                "Tube":
+                    core.tube,
+
+                "Core":
+                    core.core,
+
+                "Data Core":
+                    core.dataCore,
+
+                "Mapping / Tujuan":
+                    core.mapping
+
+            });
+
+        });
+
+    });
+
+
+    /* Membuat worksheet */
+
+    const worksheet =
+        XLSX.utils.json_to_sheet(
+            excelData
+        );
+
+
+    /* Membuat workbook */
+
+    const workbook =
+        XLSX.utils.book_new();
+
+
+    XLSX.utils.book_append_sheet(
+        workbook,
+        worksheet,
+        "Data Core"
+    );
+
+
+    /* Lebar kolom */
+
+    worksheet["!cols"] = [
+
+        {wch:8},
+        {wch:20},
+        {wch:20},
+        {wch:10},
+        {wch:10},
+        {wch:20},
+        {wch:25}
+
+    ];
+
+
+    /* Download Excel */
+
+    XLSX.writeFile(
+        workbook,
+        "Data_Core_Kabel.xlsx"
+    );
+
+}
